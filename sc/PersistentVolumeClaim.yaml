@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mysqlclaim
+  namespace: dinghao-ns
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "my-nfs-storage"
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi

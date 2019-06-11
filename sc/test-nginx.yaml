@@ -1,0 +1,17 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: test-pod-nginx
+  namespace: dinghao-ns
+spec:
+  containers:
+  - name: test-pod-nginx
+    image: nginx:latest
+    volumeMounts:
+      - name: nfs-pvc
+        mountPath: "/mnt"
+  restartPolicy: "Never"
+  volumes:
+    - name: nfs-pvc
+      persistentVolumeClaim:
+        claimName: mysqlclaim
