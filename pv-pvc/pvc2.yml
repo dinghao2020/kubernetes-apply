@@ -1,0 +1,12 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc2
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: pv2
+  resources:
+    requests:
+      storage: 5Gi

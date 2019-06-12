@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv2
+  labels:
+    pv-id: pv2 
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: pv2
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /pv2
+    server: 172.16.3.24
