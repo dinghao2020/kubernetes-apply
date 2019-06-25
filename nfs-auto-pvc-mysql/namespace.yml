@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dinghao-ns
+  labels:
+    name: dinghao-ns
+    part-of: dinghao-ns

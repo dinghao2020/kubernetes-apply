@@ -1,0 +1,70 @@
+apiVersion: extensions/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: mshk-mysql
+    version: "5.7"
+    group: com.mshk
+  name: mshk-mysql
+  namespace: dinghao-ns
+spec:
+  replicas: 1
+  template: 
+    metadata:
+      labels:
+        app: mshk-mysql
+        group: com.mshk
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        - name: character-set-server
+          value: "utf8"
+        - name: collation-server
+          value: "utf8_bin"
+        image: "mysql:5.7"
+        imagePullPolicy: IfNotPresent
+        name: mshk-mysql
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: mysql-ini
+          mountPath: /etc/mysql/my.cnf
+          subPath: my.ini
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysqlclaim
+      - name: mysql-ini
+        configMap:
+          name: mysqlini
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    expose: "true"
+    app: mshk-mysql
+    group: com.mshk
+    version: '5.7'
+  name: mshk-mysql
+  namespace: dinghao-ns
+spec:
+  type: NodePort
+  ports:
+  - name: mysql
+    port: 3306
+    nodePort: 30800
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mshk-mysql
+    group: com.mshk
